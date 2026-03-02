@@ -21,13 +21,18 @@ import dev.fbvictorhugo.pontocerto.domain.TimeClockEvent
 import dev.fbvictorhugo.pontocerto.ui.theme.Dimens
 import dev.fbvictorhugo.pontocerto.ui.theme.PontoCertoTheme
 import dev.fbvictorhugo.pontocerto.ui.theme.Typography
-import dev.fbvictorhugo.pontocerto.utils.Formatters
-import java.util.Date
 
+/**
+ * A composable row that displays a clock-in/out event with its corresponding icon and fill time.
+ *
+ * @param event The type of time clock event (e.g., WORK_IN, LUNCH_IN) which determines the icon shown.
+ * @param formattedTime The string representation of the time to be displayed "HH:mm" format. Defaults to the [TimeClockEvent] fill time.
+ * @param modifier The [Modifier] to be applied to the row layout.
+ */
 @Composable
 fun ClockInField(
     event: TimeClockEvent,
-    date: Date,
+    formattedTime: String = event.fillTime,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,22 +46,28 @@ fun ClockInField(
             imageVector = getClockInImageVector(event),
             contentDescription = null,
             Modifier.size(Dimens.IconSizeLarge),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
         Text(
-            Formatters.formatHour(date), modifier = Modifier.padding(start = Dimens.PaddingMedium),
-            style = Typography.displaySmall
+            formattedTime, modifier = Modifier.padding(start = Dimens.PaddingMedium),
+            style = Typography.displaySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
     }
-
 }
 
+/**
+ * Returns the appropriate [ImageVector] icon based on the provided [TimeClockEvent].
+ *
+ * @param event The clock-in/out event type used to determine the icon.
+ * @return An [ImageVector] representing the event.
+ */
 private fun getClockInImageVector(event: TimeClockEvent): ImageVector {
     return when (event) {
-        TimeClockEvent.CLOCK_IN -> Icons.Filled.Work
+        TimeClockEvent.WORK_IN -> Icons.Filled.Work
         TimeClockEvent.LUNCH_IN -> Icons.Filled.LocalDining
         TimeClockEvent.LUNCH_OUT -> Icons.Filled.EventSeat
-        TimeClockEvent.CLOCK_OUT -> Icons.Filled.Home
+        TimeClockEvent.WORK_OUT -> Icons.Filled.Home
     }
 }
 
@@ -64,10 +75,7 @@ private fun getClockInImageVector(event: TimeClockEvent): ImageVector {
 @Composable
 private fun ClockInFieldView() {
     PontoCertoTheme {
-        ClockInField(
-            event = TimeClockEvent.CLOCK_IN,
-            date = Date(),
-        )
+        ClockInField(event = TimeClockEvent.WORK_IN)
     }
 }
 

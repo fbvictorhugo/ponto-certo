@@ -12,6 +12,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.fbvictorhugo.pontocerto.ui.theme.PontoCertoTheme
 
+/**
+ * A custom horizontal line component that wraps [HorizontalDivider].
+ *
+ * @param modifier The [Modifier] to be applied to the line.
+ * @param thickness The thickness of the line.
+ * @param color The color of the line.
+ */
 @Composable
 fun Line(
     modifier: Modifier = Modifier,

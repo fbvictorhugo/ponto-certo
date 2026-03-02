@@ -15,6 +15,13 @@ import dev.fbvictorhugo.pontocerto.ui.theme.Typography
 import dev.fbvictorhugo.pontocerto.utils.Formatters
 import java.util.Date
 
+/**
+ * A composable component that displays a header for the current day.
+ * It shows the formatted date and the day of the week centered horizontally.
+ *
+ * @param date The [Date] object to be formatted and displayed.
+ * @param modifier The [Modifier] to be applied to the root layout of this component.
+ */
 @Composable
 fun HeaderToday(
     date: Date,

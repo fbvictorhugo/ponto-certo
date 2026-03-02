@@ -25,7 +25,6 @@ import dev.fbvictorhugo.pontocerto.ui.theme.Dimens
 import dev.fbvictorhugo.pontocerto.ui.theme.PontoCertoTheme
 import java.util.Date
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +59,10 @@ fun App() {
                     Line()
                     Spacer(Modifier.padding(vertical = Dimens.PaddingMedium))
 
-                    ClockInField(TimeClockEvent.CLOCK_IN, Date())
-                    ClockInField(TimeClockEvent.LUNCH_IN, Date())
-                    ClockInField(TimeClockEvent.LUNCH_OUT, Date())
-                    ClockInField(TimeClockEvent.CLOCK_OUT, Date())
+                    ClockInField(TimeClockEvent.WORK_IN)
+                    ClockInField(TimeClockEvent.LUNCH_IN)
+                    ClockInField(TimeClockEvent.LUNCH_OUT)
+                    ClockInField(TimeClockEvent.WORK_OUT)
                 }
             }
         }
