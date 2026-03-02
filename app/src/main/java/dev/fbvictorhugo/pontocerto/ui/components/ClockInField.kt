@@ -26,15 +26,24 @@ import dev.fbvictorhugo.pontocerto.ui.theme.Typography
  * A composable row that displays a clock-in/out event with its corresponding icon and fill time.
  *
  * @param event The type of time clock event (e.g., WORK_IN, LUNCH_IN) which determines the icon shown.
- * @param formattedTime The string representation of the time to be displayed "HH:mm" format. Defaults to the [TimeClockEvent] fill time.
+ * @param formattedTime The string representation of the time to be displayed "HH:mm" format. Defaults to the "--:--" fill time.
  * @param modifier The [Modifier] to be applied to the row layout.
  */
 @Composable
 fun ClockInField(
     event: TimeClockEvent,
-    formattedTime: String = event.fillTime,
+    formattedTime: String?,
     modifier: Modifier = Modifier
 ) {
+
+    val isPlaceholder = formattedTime.isNullOrEmpty()
+
+    val color = if (isPlaceholder) {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -46,12 +55,13 @@ fun ClockInField(
             imageVector = getClockInImageVector(event),
             contentDescription = null,
             Modifier.size(Dimens.IconSizeLarge),
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            tint = color
         )
         Text(
-            formattedTime, modifier = Modifier.padding(start = Dimens.PaddingMedium),
+            if (isPlaceholder) "--:--" else formattedTime,
+            modifier = Modifier.padding(start = Dimens.PaddingMedium),
             style = Typography.displaySmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            color = color
         )
     }
 }
@@ -75,7 +85,6 @@ private fun getClockInImageVector(event: TimeClockEvent): ImageVector {
 @Composable
 private fun ClockInFieldView() {
     PontoCertoTheme {
-        ClockInField(event = TimeClockEvent.WORK_IN)
+        ClockInField(event = TimeClockEvent.WORK_IN, null)
     }
 }
-

@@ -15,8 +15,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.fbvictorhugo.pontocerto.domain.TimeClockEvent
 import dev.fbvictorhugo.pontocerto.ui.components.ClockInField
 import dev.fbvictorhugo.pontocerto.ui.components.HeaderToday
@@ -24,6 +27,7 @@ import dev.fbvictorhugo.pontocerto.ui.components.Line
 import dev.fbvictorhugo.pontocerto.ui.theme.Dimens
 import dev.fbvictorhugo.pontocerto.ui.theme.PontoCertoTheme
 import java.util.Date
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,14 +40,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun App() {
+fun App(viewModel: HomeViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     PontoCertoTheme {
         Surface {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
-                        //TODO
+                        viewModel.onFabClick()
                     }) {
                         Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null)
                     }
@@ -59,10 +65,23 @@ fun App() {
                     Line()
                     Spacer(Modifier.padding(vertical = Dimens.PaddingMedium))
 
-                    ClockInField(TimeClockEvent.WORK_IN)
-                    ClockInField(TimeClockEvent.LUNCH_IN)
-                    ClockInField(TimeClockEvent.LUNCH_OUT)
-                    ClockInField(TimeClockEvent.WORK_OUT)
+                    val checkpoint = uiState.checkpoint
+                    ClockInField(
+                        event = TimeClockEvent.WORK_IN,
+                        formattedTime = checkpoint?.workIn
+                    )
+                    ClockInField(
+                        event = TimeClockEvent.LUNCH_IN,
+                        formattedTime = checkpoint?.lunchIn
+                    )
+                    ClockInField(
+                        event = TimeClockEvent.LUNCH_OUT,
+                        formattedTime = checkpoint?.lunchOut
+                    )
+                    ClockInField(
+                        event = TimeClockEvent.WORK_OUT,
+                        formattedTime = checkpoint?.workOut
+                    )
                 }
             }
         }
