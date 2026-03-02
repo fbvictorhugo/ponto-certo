@@ -7,6 +7,7 @@ import java.util.Locale
 class Formatters {
 
     companion object {
+
         fun formatDate(date: Date): String {
             return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
         }
@@ -17,6 +18,10 @@ class Formatters {
 
         fun formatHour(date: Date): String {
             return SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
+        }
+
+        fun toDate(formattedTime: String?): Date? {
+            return SimpleDateFormat("HH:mm", Locale.getDefault()).parse(formattedTime)
         }
     }
 

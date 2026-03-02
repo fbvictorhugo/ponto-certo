@@ -68,19 +68,23 @@ fun App(viewModel: HomeViewModel = viewModel()) {
                     val checkpoint = uiState.checkpoint
                     ClockInField(
                         event = TimeClockEvent.WORK_IN,
-                        formattedTime = checkpoint?.workIn
+                        formattedTime = checkpoint?.workIn,
+                        formattedTimePrev = checkpoint?.workInPrev ?: ""
                     )
                     ClockInField(
                         event = TimeClockEvent.LUNCH_IN,
-                        formattedTime = checkpoint?.lunchIn
+                        formattedTime = checkpoint?.lunchIn,
+                        formattedTimePrev = checkpoint?.lunchInPrev ?: ""
                     )
                     ClockInField(
                         event = TimeClockEvent.LUNCH_OUT,
-                        formattedTime = checkpoint?.lunchOut
+                        formattedTime = checkpoint?.lunchOut,
+                        formattedTimePrev = checkpoint?.lunchOutPrev ?: ""
                     )
                     ClockInField(
                         event = TimeClockEvent.WORK_OUT,
-                        formattedTime = checkpoint?.workOut
+                        formattedTime = checkpoint?.workOut,
+                        formattedTimePrev = checkpoint?.workOutPrev ?: ""
                     )
                 }
             }

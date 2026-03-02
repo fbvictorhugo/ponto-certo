@@ -3,6 +3,7 @@ package dev.fbvictorhugo.pontocerto.ui.features.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.fbvictorhugo.pontocerto.domain.Checkpoint
+import dev.fbvictorhugo.pontocerto.utils.Calculator
 import dev.fbvictorhugo.pontocerto.utils.Formatters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,21 +30,33 @@ class HomeViewModel : ViewModel() {
 
     fun onFabClick() {
         _uiState.update { currentState ->
-            val currentCheckpoint =
+            val current =
                 currentState.checkpoint ?: Checkpoint(date = Formatters.formatDate(Date()))
             val now = Formatters.formatHour(Date())
 
-            val updatedCheckpoint = when {
-                currentCheckpoint.workIn.isNullOrEmpty() -> currentCheckpoint.copy(workIn = now)
-                currentCheckpoint.lunchIn.isNullOrEmpty() -> currentCheckpoint.copy(lunchIn = now)
-                currentCheckpoint.lunchOut.isNullOrEmpty() -> currentCheckpoint.copy(lunchOut = now)
-                currentCheckpoint.workOut.isNullOrEmpty() -> currentCheckpoint.copy(workOut = now)
-                else -> currentCheckpoint
-            }
+            val updated = when {
+                current.workIn.isNullOrEmpty() -> current.copy(workIn = now)
 
-            currentState.copy(checkpoint = updatedCheckpoint)
+                current.lunchIn.isNullOrEmpty() -> {
+                    current.copy(
+                        lunchIn = now,
+                        lunchOutPrev = Formatters.formatHour(Calculator.addHour(Date(), 1))
+                    )
+                }
+
+                current.lunchOut.isNullOrEmpty() -> {
+                    val withLunchOut = current.copy(lunchOut = now)
+                    withLunchOut.copy(
+                        workOutPrev = Calculator.calcTimeRemaining(withLunchOut).workOutPrev
+                    )
+                }
+
+                current.workOut.isNullOrEmpty() -> current.copy(workOut = now)
+
+                else -> current
+            }
+            currentState.copy(checkpoint = updated)
         }
-        println("Ponto registrado!")
     }
 }
 

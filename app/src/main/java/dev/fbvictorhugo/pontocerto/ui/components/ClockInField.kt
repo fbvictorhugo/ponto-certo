@@ -33,6 +33,7 @@ import dev.fbvictorhugo.pontocerto.ui.theme.Typography
 fun ClockInField(
     event: TimeClockEvent,
     formattedTime: String?,
+    formattedTimePrev: String,
     modifier: Modifier = Modifier
 ) {
 
@@ -58,7 +59,7 @@ fun ClockInField(
             tint = color
         )
         Text(
-            if (isPlaceholder) "--:--" else formattedTime,
+            if (isPlaceholder) formattedTimePrev else formattedTime,
             modifier = Modifier.padding(start = Dimens.PaddingMedium),
             style = Typography.displaySmall,
             color = color
@@ -85,6 +86,10 @@ private fun getClockInImageVector(event: TimeClockEvent): ImageVector {
 @Composable
 private fun ClockInFieldView() {
     PontoCertoTheme {
-        ClockInField(event = TimeClockEvent.WORK_IN, null)
+        ClockInField(
+            event = TimeClockEvent.WORK_IN,
+            formattedTime = "08:00",
+            formattedTimePrev = "08:00"
+        )
     }
 }

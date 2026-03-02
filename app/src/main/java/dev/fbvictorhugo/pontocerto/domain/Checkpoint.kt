@@ -5,5 +5,10 @@ data class Checkpoint(
     val workIn: String? = null,
     val lunchIn: String? = null,
     val lunchOut: String? = null,
-    val workOut: String? = null
+    val workOut: String? = null,
+
+    val workInPrev: String = "--:--",
+    val lunchInPrev: String = "--:--",
+    val lunchOutPrev: String = "--:--",
+    val workOutPrev: String = "--:--"
 )
